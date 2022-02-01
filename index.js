@@ -9,6 +9,7 @@ const userCart = require('./routes/Cart')
 const userOrder = require('./routes/Order')
 const userStripe = require('./routes/Stripe')
 const cors =  require('cors') 
+const path = require('path');
 
 
 mongoose.connect(
@@ -25,6 +26,14 @@ app.use('/api/Carts',userCart)
 app.use('/api/Orders',userOrder)
 app.use('/api/checkout',userStripe)
 
+
+
+
+app.use(express.static(path.join(__dirname, "/e-commerce/build")));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/e-commerce/build', 'index.html'));
+});
 
 
 app.listen(process.env.PORT || 5000 ,()=>{

@@ -1,20 +1,25 @@
 
 const router = require('express').Router();
-const stripe = require('stripe')("sk_test_51KFDoSSBvYCKRRzOxWTDFamm9mbOG05dLP5Nr2fmfZ4XQhyHbLwT5H6cLWU2qYTtIIuHXFt3sNOnGP7d599Oh7Rw004no6KOn1");
+const stripe = require('stripe')(process.env.STRIPE_KEY);
 
 
 router.post('/payment',async(req,res)=>{
-  console.log("sasa",req.body.tokenId)
-   try{ 
-       const charge = await  stripe.charges.create({
-        source: req.body.tokenId,
-        amount:req.body.amount,
-        currency:"usd",
-    })
+  stripe.charges.create(
 
-    res.status(200).json(charge)
+    {
+        source:req.body.tokenId,
+        amount:res.body.amount,
+        currency: "usd"
+    },
+    (stripeErr,stripeRes)=>{
+        if(stripeErr){
+            res.status(500).json(stripeErr)
+        }
+        else{
+            res.status(200).json(stripeRes)
+        }
     }
-    catch(err){ console.log(err)}
+  )
 })
 
 
