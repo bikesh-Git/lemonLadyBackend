@@ -29,10 +29,10 @@ app.use('/api/checkout',userStripe)
 
 
 
-app.use(express.static(path.join(__dirname, "/e-commerce/build")));
+app.use(express.static(path.join(__dirname, "e-commerce/build")));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/e-commerce/build', 'index.html'));
+  res.sendFile(path.join(__dirname, 'e-commerce/build', 'index.html'));
 });
 
 
